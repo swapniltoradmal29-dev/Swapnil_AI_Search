@@ -34,13 +34,9 @@ jobs:
           channel: 'stable'
 
       - name: Compile Mobile APK Package
-        env:
-          # Force compiler parameters inside explicit local working directories
-          PUB_CACHE: ${{ github.workspace }}/.pub_cache
-          FLET_SDK_PATH: ${{ github.workspace }}/.flet_sdk
         run: |
-          # --no-config tells flet to use local directories and bypass root system locks
-          flet build apk --output build_out --no-config
+          # flet pack automatically bypasses license check prompt stalls
+          flet pack main.py --target android --output build_out
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
