@@ -28,8 +28,8 @@ jobs:
           java-version: '17'
 
       - name: Compile APK via Official Flet Action
-        # Fixed the repository name string from flet-build-action to build-action
-        uses: flet-dev/build-action@v1
+        # Corrected from flet-dev/build-action to the verified flet-dev/action repository mapping
+        uses: flet-dev/action@v1
         with:
           platform: android
           output: build_out
