@@ -33,16 +33,14 @@ jobs:
           flutter-version: '3.22.2'
           channel: 'stable'
 
-      - name: Compile Native Android Application Package
-        env:
-          PUB_CACHE: ${{ github.workspace }}/.pub_cache
-          FLET_SDK_PATH: ${{ github.workspace }}/.flet_sdk
+      - name: Compile Mobile APK Package
         run: |
-          # Bypasses system configuration limits using isolated paths and accepts licenses instantly
-          flet build apk --output build_out --no-config --yes
+          # flet pack completely automates the Android certificate pipeline and bypasses stall prompts
+          flet pack main.py --target android --output build_out --yes
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Swapnil_AI_Search-APK
-          path: build_out/apk/app-release.apk
+          # Explicit wildcard tells the server to safely pick up the newly generated binary
+          path: build_out/*.apk
