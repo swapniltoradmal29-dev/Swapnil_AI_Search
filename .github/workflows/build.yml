@@ -27,12 +27,20 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Compile APK via Official Flet Action
-        # Specified the explicit verified repository namespace path and release tag v2
-        uses: flet-dev/flet-build-action@v2
+      - name: Setup Flutter Toolchain Environment
+        uses: subosito/flutter-action@v2
         with:
-          platform: android
-          output: build_out
+          flutter-version: '3.22.2'
+          channel: 'stable'
+
+      - name: Compile Native Android Application Package
+        env:
+          # Forces the background compilation directory to run within safe, local workspaces
+          PUB_CACHE: ${{ github.workspace }}/.pub_cache
+          FLET_SDK_PATH: ${{ github.workspace }}/.flet_sdk
+        run: |
+          # Automatically registers permissions and forces a non-interactive console compilation build
+          flet build apk --output build_out --no-config
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
