@@ -33,9 +33,16 @@ jobs:
           flutter-version: '3.22.2'
           channel: 'stable'
 
+      - name: Pre-Accept Android SDK Licenses
+        run: |
+          # Automatically signs and approves all Android compiler developer agreements
+          mkdir -p ${ANDROID_HOME}/licenses
+          echo -e "\n244d2d9e8db56d2134db972d7b3f1f85514f7e8b" > ${ANDROID_HOME}/licenses/android-sdk-license
+          echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" >> ${ANDROID_HOME}/licenses/android-sdk-license
+          echo -e "\n2523027-linux" > ${ANDROID_HOME}/licenses/android-sdk-preview-license
+
       - name: Create Workspace Layout & Compile APK
         run: |
-          # Creates the temporary build layout wrapper explicitly required by Linux cloud servers
           mkdir -p build_out
           flet build apk --output build_out --no-config
 
