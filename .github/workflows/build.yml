@@ -27,12 +27,19 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Compile APK via Official Flet Action
-        # This official action automatically manages headless Android SDK licenses internally
-        uses: flet-dev/flet-build-action@v2
+      - name: Setup Flutter Toolchain Environment
+        uses: subosito/flutter-action@v2
         with:
-          platform: android
-          output: build_out
+          flutter-version: '3.22.2'
+          channel: 'stable'
+
+      - name: Compile Native Android Application Package
+        env:
+          PUB_CACHE: ${{ github.workspace }}/.pub_cache
+          FLET_SDK_PATH: ${{ github.workspace }}/.flet_sdk
+        run: |
+          # Bypasses system configuration limits using isolated paths and accepts licenses instantly
+          flet build apk --output build_out --no-config --yes
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
