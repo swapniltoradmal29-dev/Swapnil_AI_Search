@@ -35,11 +35,12 @@ jobs:
 
       - name: Compile Native Android Application Package
         run: |
-          # flet pack automates target configurations and avoids root directory permission conflicts
-          flet pack main.py --target android --output build_out --yes
+          # Creates the temporary output folder and uses direct project references
+          mkdir -p build_out
+          flet build apk --output build_out --no-config --yes
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Swapnil_AI_Search-APK
-          path: build_out/apk/app-release.apk
+          path: build_out/app-release.apk
