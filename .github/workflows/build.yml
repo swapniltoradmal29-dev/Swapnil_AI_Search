@@ -27,15 +27,15 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Setup Flutter
+      - name: Setup Flutter Engine
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'
+          flutter-version: '3.22.2'
           channel: 'stable'
 
-      - name: Build Android APK via Flet
+      - name: Compile Mobile APK Package
         run: |
-          flet build apk
+          flet pack main.py --target android --output build
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
