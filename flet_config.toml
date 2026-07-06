@@ -1,0 +1,4 @@
+[app]
+path = "main.py"
+name = "Swapnil_AI_Search"
+package_name = "com.swapnil.aisearch"

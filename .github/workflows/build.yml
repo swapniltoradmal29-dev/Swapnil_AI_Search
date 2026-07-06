@@ -27,20 +27,13 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Setup Flutter Toolchain Environment
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.2'
-          channel: 'stable'
-
-      - name: Compile Mobile APK Package
+      - name: Compile Native Android APK
         run: |
-          # flet pack completely automates the Android certificate pipeline and bypasses stall prompts
-          flet pack main.py --target android --output build_out --yes
+          # Clean execution standard for current flet frameworks inside cloud servers
+          flet build apk --output build_out --yes
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Swapnil_AI_Search-APK
-          # Explicit wildcard tells the server to safely pick up the newly generated binary
-          path: build_out/*.apk
+          path: build_out/apk/*.apk
