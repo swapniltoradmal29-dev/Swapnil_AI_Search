@@ -33,13 +33,20 @@ jobs:
           flutter-version: '3.22.2'
           channel: 'stable'
 
+      - name: Force Accept Android SDK Licenses
+        run: |
+          # Automatically signs and approves all Android compiler developer agreements
+          mkdir -p ${ANDROID_HOME}/licenses
+          echo -e "\n244d2d9e8db56d2134db972d7b3f1f85514f7e8b" > ${ANDROID_HOME}/licenses/android-sdk-license
+          echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" >> ${ANDROID_HOME}/licenses/android-sdk-license
+          echo -e "\n2523027-linux" > ${ANDROID_HOME}/licenses/android-sdk-preview-license
+
       - name: Compile Native Android Application Package
         env:
-          # Forces the background compilation directory to run within safe, local workspaces
           PUB_CACHE: ${{ github.workspace }}/.pub_cache
           FLET_SDK_PATH: ${{ github.workspace }}/.flet_sdk
         run: |
-          # Automatically registers permissions and forces a non-interactive console compilation build
+          # The --no-config flag uses our explicitly passed environment paths
           flet build apk --output build_out --no-config
 
       - name: Upload Finished APK Artifact
