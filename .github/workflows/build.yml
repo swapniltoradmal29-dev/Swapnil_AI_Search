@@ -33,14 +33,13 @@ jobs:
           flutter-version: '3.22.2'
           channel: 'stable'
 
-      - name: Compile Native Android Application Package
+      - name: Compile Mobile APK Package
         run: |
-          # Creates the temporary output folder and uses direct project references
-          mkdir -p build_out
-          flet build apk --output build_out --no-config --yes
+          # flet pack acts as a clean standalone automation wrapper on headless systems
+          flet pack main.py --target android --output build_out --yes
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Swapnil_AI_Search-APK
-          path: build_out/app-release.apk
+          path: build_out/apk/app-release.apk
