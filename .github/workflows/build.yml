@@ -27,20 +27,15 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Setup Flutter Toolchain Environment
-        uses: subosito/flutter-action@v2
+      - name: Compile APK via Official Flet Action
+        # This official action automatically manages headless Android SDK licenses internally
+        uses: flet-dev/flet-build-action@v2
         with:
-          flutter-version: '3.22.2'
-          channel: 'stable'
-
-      - name: Create Workspace Layout & Compile APK
-        run: |
-          # Creates the temporary build layout wrapper explicitly required by Linux cloud servers
-          mkdir -p build_out
-          flet build apk --output build_out --no-config --yes
+          platform: android
+          output: build_out
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Swapnil_AI_Search-APK
-          path: build_out/app-release.apk
+          path: build_out/apk/app-release.apk
