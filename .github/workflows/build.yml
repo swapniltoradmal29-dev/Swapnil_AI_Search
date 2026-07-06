@@ -29,11 +29,12 @@ jobs:
 
       - name: Compile Native Android APK
         run: |
-          # Clean execution standard for current flet frameworks inside cloud servers
+          # Clean build command for headless environments
           flet build apk --output build_out --yes
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Swapnil_AI_Search-APK
-          path: build_out/apk/*.apk
+          # FIX: Double asterisk searches all generated sub-directories automatically to find any matching .apk
+          path: build_out/**/*.apk
