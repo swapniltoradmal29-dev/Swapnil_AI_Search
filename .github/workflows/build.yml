@@ -28,8 +28,8 @@ jobs:
           java-version: '17'
 
       - name: Compile APK via Official Flet Action
-        # This official action automatically manages headless Android SDK licenses internally
-        uses: flet-dev/flet-build-action@v1
+        # Fixed the repository name string from flet-build-action to build-action
+        uses: flet-dev/build-action@v1
         with:
           platform: android
           output: build_out
