@@ -35,8 +35,8 @@ jobs:
 
       - name: Compile Mobile APK Package
         run: |
-          # flet pack automatically bypasses license check prompt stalls
-          flet pack main.py --target android --output build_out
+          # --yes forces automated acceptance of the Android SDK builder conditions
+          flet pack main.py --target android --output build_out --yes
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
