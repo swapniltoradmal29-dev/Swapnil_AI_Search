@@ -1,9 +1,8 @@
 import flet as ft
 from google import genai
-from google.genai import types
 
 # Initialize the modern Google GenAI Client
-# Ensure you put your active API key string inside the quotes here!
+# Remember to paste your actual free Gemini API key string from Google AI Studio here!
 client = genai.Client(api_key="YOUR_FREE_GEMINI_API_KEY")
 
 def main(page: ft.Page):
@@ -13,7 +12,7 @@ def main(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.scroll = ft.ScrollMode.AUTO
     
-    # Force application window to scale to native mobile screen sizes smoothly
+    # Ensures the application layout scales cleanly to native mobile viewport screens
     page.window_width = 400
     page.window_height = 800
 
@@ -53,23 +52,25 @@ def main(page: ft.Page):
             )
             page.update()
 
-            # Execute context intelligence model deployment
+            # FIX: Passed system_instruction directly as a root argument for seamless mobile SDK validation
             response = client.models.generate_content(
                 model='gemini-2.5-flash',
                 contents=query_text,
-                config=types.GenerateContentConfig(
-                    system_instruction=(
-                        "You are Swapnil_AI_Search, a multi-modal data processing assistant. "
-                        "You have full capabilities to read text data, analyze technical audio scripts, "
-                        "break down logs, handle camera snippets, and parse information tables. "
-                        "Provide deeply factual, comprehensive, structured answers back to the user."
-                    )
+                system_instruction=(
+                    "You are Swapnil_AI_Search, a multi-modal data processing assistant. "
+                    "You have full capabilities to read text data, analyze technical audio scripts, "
+                    "break down logs, handle camera snippets, and parse information tables. "
+                    "Provide deeply factual, comprehensive, structured answers back to the user."
                 )
             )
             
             results_container.controls.append(
                 ft.Container(
-                    content=ft.Markdown(response.text, selectable=True, extension_set=ft.MarkdownExtensionSet.GITHUB_WEB),
+                    content=ft.Markdown(
+                        response.text, 
+                        selectable=True, 
+                        extension_set="gitHubWeb" # FIX: Converted to mobile-compatible string parameter
+                    ),
                     padding=12, bgcolor=ft.Colors.SURFACE_CONTAINER, border_radius=8
                 )
             )
@@ -84,7 +85,7 @@ def main(page: ft.Page):
         search_button.disabled = False
         page.update()
 
-    # --- Mobile-Safe Paste Action Controller ---
+    # --- Mobile-Safe Clipboard Actions Controller ---
     def handle_clipboard_paste(e):
         try:
             clipboard_contents = page.get_clipboard_data()
@@ -92,7 +93,6 @@ def main(page: ft.Page):
                 search_input.value = (search_input.value or "") + str(clipboard_contents)
                 page.update()
         except Exception:
-            # Fallback warning if mobile platform permissions block quick clipboard data access
             search_input.hint_text = "Clipboard access restricted by device OS. Type directly instead."
             page.update()
 
