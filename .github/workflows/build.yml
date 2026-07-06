@@ -35,11 +35,12 @@ jobs:
 
       - name: Compile Mobile APK Package
         run: |
-          # flet pack acts as a clean standalone automation wrapper on headless systems
+          # Automated package compilation wrapper sequence 
           flet pack main.py --target android --output build_out --yes
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Swapnil_AI_Search-APK
-          path: build_out/apk/app-release.apk
+          # Configured path to safely track and fetch the output binary directly
+          path: build_out/*.apk
