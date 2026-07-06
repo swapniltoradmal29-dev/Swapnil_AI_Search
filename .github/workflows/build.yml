@@ -34,12 +34,9 @@ jobs:
           channel: 'stable'
 
       - name: Compile Native Android Application Package
-        env:
-          PUB_CACHE: ${{ github.workspace }}/.pub_cache
-          FLET_SDK_PATH: ${{ github.workspace }}/.flet_sdk
         run: |
-          # Added the --yes flag to automatically handle all license confirmations natively
-          flet build apk --output build_out --no-config --yes
+          # flet pack automates target configurations and avoids root directory permission conflicts
+          flet pack main.py --target android --output build_out --yes
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
